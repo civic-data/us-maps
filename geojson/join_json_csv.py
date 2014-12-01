@@ -10,7 +10,7 @@ import re
 
 data1={}
 
-input1 = 'input1.csv'
+input1 = 'nyc-small-residential-class-1-average-tax-burden-by-zipcode - nyc-small-residential-class-1-average-tax-burden-by-zipcode.csv'
 if len(sys.argv) > 1:
     input1 = sys.argv[1]
 
@@ -37,11 +37,11 @@ if len(sys.argv) > 3:
 # print >>sys.stderr,center_polygon.center_geolocation( [( 40.7127, -74.0059 ), ( 41.8369, -87.6847), ( 38.627003, -90.199402) ])
 
 # cleanup1 = re.compile(' .*')
-# with open(input1) as csvfile:
-#     csvreader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
-#     for row in csvreader:
-#         #print >>sys.stderr, "key1: " , row['fCount'] , row['fWealth']
-#         if row['fCount'] and row['fWealth']:
+with open(input1) as csvfile:
+    csvreader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
+    for row in csvreader:
+        print >>sys.stderr, "key1: " , row['average_tax_burden'] , row['zip']
+        data1[ row['zip'] ] = row['average_tax_burden']
 # 
 #             if field1 == 'Province':
 #                 key1=row[field1]
@@ -66,7 +66,11 @@ file1 = json.load(sys.stdin)
 
 for item1 in file1['features']:
     try:
-        print item1
+        #print item1
+        # print item1['properties']['postalCode']
+
+        item1['properties']['average_tax_burden'] = data1[ item1['properties']['postalCode']]
+
 
         #print >> sys.stderr, 'XXXQQQ',item1['geometry']['coordinates'][0]
         #print >> sys.stderr, 'XXXQQQ',item1['geometry']['type']
@@ -76,4 +80,4 @@ for item1 in file1['features']:
         print >>sys.stderr, 'issue1:', e, item1
 
 
-# json.dump(file1,sys.stdout)
+json.dump(file1,sys.stdout)
