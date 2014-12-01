@@ -66,7 +66,7 @@ file1 = json.load(sys.stdin)
 
 for item1 in file1['features']:
     try:
-        #print item1
+        print  >>sys.stderr, item1
         # print item1['properties']['postalCode']
 
         item1['properties']['average_tax_burden'] = data1[ item1['properties']['postalCode']]
